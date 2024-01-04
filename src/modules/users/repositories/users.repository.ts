@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/modules/global/prisma/prisma.service';
 import { CreateUserDtos } from '../dtos/users/create-user.dtos';
 import { UpdateUserDtos } from '../dtos/users/update-user.dtos';
+import { FinUserDtos } from '../dtos/users/find-user-.dtos';
 
 @Injectable()
 export class UsersRepository {
@@ -87,6 +88,19 @@ export class UsersRepository {
         },
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
+    }
+  }
+
+  async findUser(username: string, password: string) {
+    try{
+      return this.prismaService.users.findFirst({
+        where: {
+          username: username,
+          password: password,
+        },
+      })
+    } catch (error) {
+      return null;
     }
   }
 }
