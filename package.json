@@ -1,8 +1,8 @@
 {
   "name": "api-financial-manager",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "API made for connecting to various software",
+  "author": "WillBayers",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
