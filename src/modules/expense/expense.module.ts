@@ -7,6 +7,6 @@ import { ExpenseRepository } from './repositories/expense.repository';
   imports: [],
   controllers: [ExpenseController],
   providers: [ExpenseService, ExpenseRepository],
-  exports: [],
+  exports: [ExpenseRepository],
 })
 export class ExpenseModule {}

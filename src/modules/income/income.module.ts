@@ -7,6 +7,6 @@ import { IncomeRepository } from './repositories/income.repository';
   imports: [],
   controllers: [IncomeController],
   providers: [IncomeService, IncomeRepository],
-  exports: [],
+  exports: [IncomeRepository],
 })
 export class IncomeModule {}
