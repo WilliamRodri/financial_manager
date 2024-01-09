@@ -1,8 +1,13 @@
-import Routes from "./routes";
+import React from "react";
+import { AuthProvider } from "./contexts/auth";
+import { Routers } from "./routes";
 
 function App() {
+
   return (
-    <Routes />
+    <AuthProvider>
+      <Routers />
+    </AuthProvider>
   );
 }
 

@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { Image, SafeAreaView, StyleSheet, Text, TouchableOpacity } from 'react-native';
-
+import { Button, Image, SafeAreaView, StyleSheet, Text, TouchableOpacity } from 'react-native';
 
 function HomePage({ navigation }: any) {
+
   return (
     <SafeAreaView style={styles.container}>
+
       <Image
         source={require('../assets/logo/logo.png')}
         style={styles.logo}
@@ -24,7 +25,6 @@ function HomePage({ navigation }: any) {
       >
         <Text style={styles.buttonText}>Registrar-se</Text>
       </TouchableOpacity>
-      
     </SafeAreaView>
   );
 }
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
   },
   buttonRegister: {
     backgroundColor: '#232265'
-  }
+  },
 });
 
 export default HomePage;

@@ -1,14 +1,42 @@
 import * as React from 'react';
-import { Image, StyleSheet, Text, TextInput, TouchableOpacity } from 'react-native';
+import { ActivityIndicator, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import LoginService from '../services/Login.service';
+import { useAuth } from '../contexts/auth';
+import AlertModal from '../components/Alert.modal';
 
 function LoginPage({ navigation }: any) {
 
     const [ username, setUsername ] = React.useState('');
     const [ password, setPassword ] = React.useState('');
-    
+    const [ buttonLoading, setButtonLoading ] = React.useState(false);
+
+    const { signIn, login } = useAuth();
+    const [ loginState, setLoginState ] = React.useState(false);
+
+    React.useEffect(() => {
+        if (!login) {
+            setLoginState(true);
+        }
+    }, [login]);
+
+    function modalActive () {
+        return <AlertModal
+            statusModal={loginState}
+            modalTextAlert='Error no login, tente novamente!'
+            textButtonOne='Fechar'
+            textButtonTwo=''
+            clickButtonOne={() => {
+                navigation.navigate('Login');
+                setLoginState(false);
+            }}
+            clickButtonTwo={() => {
+                false;
+                setLoginState(false);
+            }}
+        />;
+    }
+
     const handleChangeUsername = (text: string) => {
         setUsername(text);
     };
@@ -17,13 +45,10 @@ function LoginPage({ navigation }: any) {
         setPassword(text)
     }
 
-    const submitData = () => {
-        const resultData = LoginService(username, password);
-        if(resultData) {
-            navigation.navigate('FinancialReport');
-        }else{
-            console.log('Usuario ou senha invalidos');
-        }
+    const processLogin = async () => {
+        setButtonLoading(true);
+        await signIn(username, password);
+        setButtonLoading(false);
     }
 
     return(
@@ -55,15 +80,24 @@ function LoginPage({ navigation }: any) {
 
                 <TouchableOpacity
                     style={styles.button}
-                    onPress={submitData}
+                    onPress={() => processLogin()}
                 >
-                    <Text style={styles.buttonText}>Entrar</Text>
+                    {buttonLoading 
+                        ? 
+                        <View style={styles.buttonLoading}>
+                            <Text style={styles.buttonText}>Conectando</Text>
+                            <ActivityIndicator size="small" color="#FFF" />
+                        </View>
+                        :
+                        <Text style={styles.buttonText}>Entrar</Text>
+                    }
                 </TouchableOpacity>
 
                 <TouchableOpacity onPress={() => navigation.navigate('Register')}>
                     <Text style={styles.buttonTextUnique}>Cadastrar-se</Text>
                 </TouchableOpacity>
 
+                { loginState ? modalActive() : null }
             </SafeAreaView>
         </KeyboardAwareScrollView>
     );
@@ -113,6 +147,10 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: '#232265',
         opacity: 50,
+    },
+    buttonLoading: {
+        flexDirection: 'row',
+        gap: 20
     }
 })
 export default LoginPage;
